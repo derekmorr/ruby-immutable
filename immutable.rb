@@ -6,21 +6,20 @@ class Array
   end
 end
 
+def fold(accumulator, elements, &block)
+  return accumulator if elements == []
+  
+  first, *rest = elements
+  new_accumulator = block.call(accumulator, first)
+  fold(new_accumulator, rest, &block)
+end
+
 def reverse(elements)
-  if elements == []
-    []
-  else
-    first, *rest = elements
-    reverse(rest) << first
-  end
+  fold([], elements) { |acc, e| [e] + acc }
 end
 
 def length(elements)
-  if elements == []
-    0
-  else
-    1 + length(elements.tail)
-  end
+  fold(0, elements) { |acc, e| acc + 1 }  
 end
 
 def drop(count, elements)
@@ -41,27 +40,25 @@ def take(count, elements)
 end
 
 def include?(elements, target)
-  return false if elements.empty?
-  head, *tail = elements
-  if head == target
-    true
-  else
-    include?(tail, target)
+  fold(false, elements) do |acc, e|
+    if not acc
+      e == target
+    else
+      acc
+    end
   end
 end
 
 def map(elements, &block)
-  return [] if elements.empty?
-  head, *tail = elements
-  [block.call(head)] + map(tail, &block)
+  fold([], elements) { |acc, e| acc << block.call(e) }
 end
 
 def select(elements, &predicate)
-  return [] if elements.empty?
-  head, *tail = elements
-  if (predicate.call(head))
-    [head] + select(tail, &predicate)
-  else
-    select(tail, &predicate)
+  fold([], elements) do |acc, e| 
+    if predicate.call(e)
+      acc << e
+    else
+      acc
+    end
   end
 end
