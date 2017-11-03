@@ -11,7 +11,7 @@ def reverse(elements)
     []
   else
     first, *rest = elements
-    reverse(rest) << first
+    reverse(rest) + [first]
   end
 end
 
