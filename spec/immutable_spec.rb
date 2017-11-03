@@ -82,7 +82,7 @@ describe "select" do
     expect(output).to eq([])
   end
 
-  it "applies the function to all elements in the list" do
+  it "returns all the values that match the predicate" do
     output = select([1,2,3,4]) { |x| x % 2 == 0 }   
     expect(output).to eq([2,4])
   end
