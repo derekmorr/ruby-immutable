@@ -7,37 +7,25 @@ class Array
 end
 
 def reverse(elements)
-  if elements == []
-    []
-  else
-    first, *rest = elements
-    reverse(rest) + [first]
-  end
+  return [] if elements == []
+  first, *rest = elements
+  reverse(rest) + [first]
 end
 
 def length(elements)
-  if elements == []
-    0
-  else
-    1 + length(elements.tail)
-  end
+  return 0 if elements == []
+  1 + length(elements.tail)
 end
 
 def drop(count, elements)
-  if count == 0
-    elements
-  else
-    drop(count-1, elements.tail)
-  end
+  return elements if count == 0
+  drop(count-1, elements.tail)
 end
 
 def take(count, elements)
-  if count == 0 || elements.empty?
-    []
-  else
-    head, *tail = elements
-    [head] + take(count-1, tail)
-  end
+  return [] if count == 0 || elements.empty?
+  head, *tail = elements
+  [head] + take(count-1, tail)
 end
 
 def include?(elements, target)
